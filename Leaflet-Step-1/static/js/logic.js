@@ -57,13 +57,11 @@ d3.json(eartquakeUrl).then(function (data) {
     }  
   // set the radius from magnitude
     function magRadius(magnitude) {
-    if (magnitude === 0) {
-      return 1;
-    }
-
-    return magnitude * 4;
-  }
-    // GeoJSON layer
+        if (magnitude === 0) {return 1;}
+        return magnitude * 4;
+     }
+    
+     // GeoJSON layer
     L.geoJson(data, {
       // Maken cricles
       pointToLayer: function(feature, latlng) {
@@ -74,40 +72,35 @@ d3.json(eartquakeUrl).then(function (data) {
       // popup for each marker
       onEachFeature: function(feature, layer) {
         layer.bindPopup("<h3>Location: " + feature.properties.place + "</h3><hr><p>Date: "
-        + new Date(feature.properties.time) + "</p><hr><p>Magnitude: " + feature.properties.mag + " </p><br><p>Depth: "+feature.geometry.coordinates[2]+"</p>");
+        + new Date(feature.properties.time) + "</p><hr><p>Magnitude: " + feature.properties.mag + " </p><p>Depth: "+feature.geometry.coordinates[2]+"</p>");
       }
     }).addTo(myMap);
   
     // an object legend
     var legend = L.control({
-      position: "bottomright"
+      position: "bottomleft"
     });
   
     // details for the legend
     legend.onAdd = function() {
       var div = L.DomUtil.create("div", "info legend");
   
-      var grades = [0, 1, 2, 3, 4, 5];
-      div.innerHTML += "<h4 style='text-align: center'>Magnitude</h4>"
-      var colors = [
-        "#98ee00",
-        "#d4ee00",
-        "#eecc00",
-        "#ee9c00",
-        "#ea822c",
-        "#ea2c2c"
-      ];
+      var depth = [400, 300, 200, 100, 70, 30, 10, -5];
+      div.innerHTML += "<h4 style='text-align: center'>Depth Legend</h4>"
+
+      //Legend colors
+      var colors = ["purple","darkred","red","orangered","orange","gold","yellow","lightgreen"]
   
-      // Looping through
-      for (var i = 0; i < grades.length; i++) {
+      // Looping through the depths array to create the legend
+      for (var i = 0; i < depth.length; i++) {
         div.innerHTML +=
-          "<i style='background: " + colors[i] + "'></i> " +
-          grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+          "<i style='background: " + colors[i]  + "'></i> " +
+          depth[i] + (depth[i + 1] ? "&ndash;" + depth[i + 1] + "<br>" : "+");
       }
       return div;
     };
   
-    // Finally, we our legend to the map.
+    // add legend to the map.
     legend.addTo(myMap);
   });  
    
