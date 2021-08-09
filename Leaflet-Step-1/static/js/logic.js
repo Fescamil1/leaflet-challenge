@@ -4,8 +4,8 @@ var eartquakeUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/al
 // Create an initial map object
 // Set the longitude, latitude, and the starting zoom level
 var myMap = L.map("map", {
-    center: [38.05, -118.24],
-    zoom: 4.3
+    center: [42.05, -117.24],
+    zoom: 3.5
   });
   
 
