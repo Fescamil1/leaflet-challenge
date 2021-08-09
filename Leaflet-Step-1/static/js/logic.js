@@ -84,19 +84,17 @@ d3.json(eartquakeUrl).then(function (data) {
     // details for the legend
     legend.onAdd = function() {
       var div = L.DomUtil.create("div", "info legend");
-  
-      var depth = [400, 300, 200, 100, 70, 30, 10, -5];
+      //Legend colors and ranges
+      var limits =["-5-10","10-30","30-70","70-100","100-200","200-300","300-400",">400"]
+      var colors = ["lightgreen", "yellow", "gold", "orange", "orangered", "red","darkred","purple"];
+      var labels = []
       div.innerHTML += "<h4 style='text-align: center'>Depth Legend</h4>"
 
-      //Legend colors
-      var colors = ["purple","darkred","red","orangered","orange","gold","yellow","lightgreen"]
-  
-      // Looping through the depths array to create the legend
-      for (var i = 0; i < depth.length; i++) {
-        div.innerHTML +=
-          "<i style='background: " + colors[i]  + "'></i> " +
-          depth[i] + (depth[i + 1] ? "&ndash;" + depth[i + 1] + "<br>" : "+");
-      }
+      limits.forEach(function (limit, index) {
+        labels.push('<li style="background-color: ' + colors[index] + '">'+limit+'</li>')
+      })
+    
+      div.innerHTML += '<ul>' + labels.join('') + '</ul>'
       return div;
     };
   
