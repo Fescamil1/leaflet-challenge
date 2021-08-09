@@ -25,16 +25,37 @@ d3.json(eartquakeUrl).then(function (data) {
      function styleInfo(feature) {
         return {
           opacity: 1,
-          fillOpacity: 1,
-          fillColor: depthColor(feature.properties.mag),
+          fillOpacity: 0.8,
+          fillColor: depthColor(feature.geometry.coordinates[2]),
           color: "black",
           radius: magRadius(feature.properties.mag),
           stroke: true,
           weight: 0.5
         };
       }
-
-  // set radiuss from magnitude
+      
+    // Determine the marker color by depth
+    function depthColor(depth) {
+        switch(true) {
+        case depth > 400:
+            return "purple";
+        case depth > 300:
+             return "darkred";
+        case depth > 200:
+            return "red";     
+        case depth > 100:
+            return "orangered";
+        case depth > 70:
+            return "orange";
+        case depth > 30:
+            return "gold";
+        case depth > 10:
+            return "yellow";
+        default:
+            return "lightgreen";
+        }
+    }  
+  // set the radius from magnitude
     function magRadius(magnitude) {
     if (magnitude === 0) {
       return 1;
@@ -53,7 +74,7 @@ d3.json(eartquakeUrl).then(function (data) {
       // popup for each marker
       onEachFeature: function(feature, layer) {
         layer.bindPopup("<h3>Location: " + feature.properties.place + "</h3><hr><p>Date: "
-        + new Date(feature.properties.time) + "</p><hr><p>Magnitude: " + feature.properties.mag + "</p>");
+        + new Date(feature.properties.time) + "</p><hr><p>Magnitude: " + feature.properties.mag + " </p><br><p>Depth: "+feature.geometry.coordinates[2]+"</p>");
       }
     }).addTo(myMap);
   
@@ -68,7 +89,14 @@ d3.json(eartquakeUrl).then(function (data) {
   
       var grades = [0, 1, 2, 3, 4, 5];
       div.innerHTML += "<h4 style='text-align: center'>Magnitude</h4>"
-      
+      var colors = [
+        "#98ee00",
+        "#d4ee00",
+        "#eecc00",
+        "#ee9c00",
+        "#ea822c",
+        "#ea2c2c"
+      ];
   
       // Looping through
       for (var i = 0; i < grades.length; i++) {
